@@ -1,0 +1,373 @@
+<html>
+<head>
+<script src="https://unpkg.com/three@0.141.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.141.0/examples/js/controls/OrbitControls.js"></script>
+    <script
+	src="https://unpkg.com/three@0.141.0/examples/js/loaders/GLTFLoader.js"></script>
+	<style>
+	@font-face {
+    font-family: 'NanumSquareNeoLight';
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.eot);
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: 'NanumSquareNeo';
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.eot);
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: 'NanumSquareNeoBold';
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.eot);
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: 'NanumSquareNeoExtraBold';
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.eot);
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: 'NanumSquareNeoHeavy';
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.eot);
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: 'NanumSquareNeoVariable';
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeo-Variable.eot);
+    src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeo-Variable.eot?#iefix) format("embedded-opentype"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeo-Variable.woff) format("woff"), url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeo-Variable.ttf) format("truetype");
+}
+	body{
+		background-color: #FFF6ED;
+		font-family: 'NanumSquareNeo', sans-serif;
+		width: 1440px;
+		margin: 0 auto;
+		overflow-x: hidden;
+	}
+	/* 헤더 스타일 */
+/* 헤더 & 네비게이션 컨테이너 */
+.header-nav-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+header {
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+    align-items: center; /* 로고 중앙 정렬 */
+    width: 100%;
+    max-width: 1200px;
+    position: relative;
+}
+
+header img {
+    width: 120px;
+    height: 120px;
+}
+
+/* 로그인, 마이페이지, 장바구니 */
+#header2 {
+    position: absolute;
+    top: 80px; /* 로고 아래에 위치 */
+    right: 20px; /* 오른쪽 끝으로 배치 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	margin-bottom: 100px;
+}
+
+#header2 p a {
+    text-decoration: none;
+    color: #744731;
+    margin-right: 10px;
+	font-size:20px;
+}
+
+#header2 img {
+    width: 50px;
+    height: 50px;
+    margin-left: 10px;
+}
+
+/* 네비게이션 */
+nav {
+    display: flex;
+    justify-content: center; /* 메뉴 왼쪽으로 정렬 */
+    align-items: center;
+    margin-top: 30px;
+    margin-left: -150px; /* 메뉴를 왼쪽으로 조금 이동 */
+    margin-bottom: 100px;
+    width: 100%; /* 메뉴가 전체 너비를 차지하도록 설정 */
+}
+
+nav ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+nav ul li {
+    margin: 0 50px; /* 메뉴 간 간격 설정 */
+    position: relative;
+}
+
+nav ul li a {
+    display: inline-block; /* 수평 배치 */
+    text-decoration: none;
+    color: #C31D3B;
+    font-size: 25px;
+    font-weight: bold;
+    padding: 10px 15px; /* 패딩 추가 */
+}
+
+nav ul li a:hover {
+    color: #744731; /* hover 시 텍스트 색상 변경 */
+    line-height: 40px; /* 텍스트 수직 중앙 정렬 */
+}
+
+/* 서브메뉴 스타일 */
+/* 서브메뉴 기본적으로 숨김 */
+.sub {
+    display: none;
+    position: absolute;
+    left: 0;
+    background-color: #C31D3B;
+    z-index: 1000;
+    padding: 10px;
+    width: 1440px; /* 원하는 크기로 조절 */
+	margin-top:300px;
+	margin-left:30px;
+	height:200px;
+}
+
+/* nav에 마우스를 올리면 모든 서브메뉴가 보이게 */
+.menu_area:hover .sub {
+    display: block;
+}
+
+/* 서브메뉴 내부 스타일 */
+.sub ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+	flex-direction: column; /* 세로 정렬 */
+	display: flex;
+}
+
+.sub ul li {
+    margin: 5px 0;
+}
+
+.sub1 {
+    margin-left: 85px;
+}
+.sub1 li:last-child {
+	margin-left:-15px;
+}
+
+.sub3 {
+    margin-left: 645px; 
+	margin-top: -110px; 
+}
+
+.sub3 li:nth-child(2), .sub3 li:last-child {
+    margin-left: -15px; 
+}
+
+.sub4 {
+    margin-left: 860px; 
+	margin-top: -165px; 
+}
+
+.sub4 li:nth-child(2){
+    margin-left: 75px; 
+}
+
+.sub4 li:last-child{
+    margin-left: 20px; 
+}
+
+.sub5 {
+    margin-left: 1110px; 
+	margin-top: -165px;
+
+}
+.sub ul li a {
+    display: block;
+    text-decoration: none;
+    color: #FFF6ED;
+    font-size: 25px;
+    padding: 10px 15px;
+}
+
+.sub ul li a:hover {
+    color: #744731;
+}
+.sub div {
+    margin-right: 20px; /* 서브메뉴 사이 간격 */
+}
+
+.sub div:last-child {
+    margin-right: 0; /* 마지막 요소의 오른쪽 여백 제거 */
+}                                                                   
+hr {
+    border: none;
+    border-top: 2px solid #C31D3B; /* 색상 변경 및 두께 설정 */
+    margin-top: -80px; /* 위치 위로 조정 */
+}
+	#footer {
+                width: 100%;
+				height:auto;
+                max-height: 250px;
+                background-color: #C31D3B;
+                display: flex; 
+                justify-content: space-between;
+                align-items: center;
+                color: #fff;
+                box-sizing: border-box;
+                padding: 50px;
+                text-decoration: none;
+            }
+
+            #footer img {
+                width: 130px;
+                height: auto;
+            }
+
+            .footer-1,
+            .footer-2 {
+                flex: 1; /* 각 요소가 같은 비율로 공간 차지 */
+                text-align: left;
+            }
+
+            #footer a {
+                text-decoration: none; 
+                color: #fff;
+            }
+
+            #footer a:hover {
+                text-decoration: underline;
+                color: #744731;
+            }
+			a{
+        text-decoration:none;
+    }
+			</style>
+</head>
+<body>
+   <div class="header-nav-container">
+    <header>
+        <a href="Main.html"><img src="images/logo.png" /></a>
+        <div id="header2">
+            <p><a href="Login.jsp">로그인 / 회원가입</a></p>
+            <a href="Login.jsp"><img src="images/mypage_red.png" alt="mypage"></a>
+            <a href="main.html"><img src="images/cart.png" alt="cart"></a>
+        </div>
+    </header>
+    <nav class="menu_area">
+    <ul class="menu">
+        <li><a href="#">커스텀 케이크</a></li>
+        <li><a href="#">이달의 케이크</a></li>
+        <li><a href="#">행복한 케이크</a></li>
+        <li><a href="CustomerService_Inquiry.jsp">고객센터</a></li>
+        <li><a href="#">후기</a></li>
+    </ul>
+    
+    <div class="sub">
+        <ul>
+		<div class="sub1">
+            <li><a href="#">도안 케이크</a></li>
+            <li><a href="#">디자인 케이크</a></li>
+		</div>
+		<div class="sub3">
+            <li><a href="#">생일 케이크</a></li>
+            <li><a href="#">결혼식 케이크</a></li>
+            <li><a href="#">기념일 케이크</a></li>
+		</div>
+		<div class="sub4">
+            <li><a href="#">환불 및 교환 정책</a></li>
+            <li><a href="CustomerService_Inquiry.jsp">문의</a></li>
+            <li><a href="#">자주 묻는 질문</a></li>
+		</div>
+		<div class="sub5">
+            <li><a href="#">고객 후기</a></li>
+		</div>
+        </ul>
+    </div>
+</nav>
+<hr>
+
+<div id="mainroom">
+
+</div>
+		<div id="footer">
+            <div class="footer-1">
+                <img src="images/logo_white.png" />
+                <p>고객센터</p>
+                <b>02-339-9947</b>
+                <p>평일 AM 10:00 ~ PM 20:00 주말, 공휴일 휴무</p>
+            </div>
+            <div class="footer-2">
+                <p><a href="Footer_policy.jsp">이용약관</a> | <a href="Footer_per_info.jsp">개인정보처리방침</a> | <a href="Footer_email.jsp">이메일무단수집거부</a></p>
+                <p>
+                    오롯이 케이크 / 레터링 CAKE | 통신판매업신고번호 : 2025 - 서울마포 - 0061 | 사업자등록번호 : 120 - 99 -
+                    48278 주식회사 오롯이케이크
+                </p>
+                <p>주소 : 서울시 마포구 연남동 334-25번지 2층 | 대표자: 이장 | 전화번호 : 02 - 339 - 9947</p>
+                <p>Copyright onlycake. All Rights Reserved.</p>
+            </div>
+        </div>
+
+
+<script>
+        // Scene, Camera, Renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
+        camera.position.set(0, 2, 5);
+
+       const renderer = new THREE.WebGLRenderer();
+renderer.setSize(1400, 800);
+document.getElementById('mainroom').appendChild(renderer.domElement);
+
+
+        // OrbitControls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.1;
+
+        // Light
+        const light = new THREE.DirectionalLight(0xffffff, 1);
+        light.position.set(5, 5, 5);
+        scene.add(light);
+
+        const ambientLight = new THREE.AmbientLight(0x404040, 1.5); // Soft light
+        scene.add(ambientLight);
+
+        // Load GLTF Model
+        const loader = new THREE.GLTFLoader();
+        loader.load(
+            '/cake/object/mainroom.gltf', // Update this to match your actual path
+            function (gltf) {
+                scene.add(gltf.scene);
+            },
+            undefined,
+            function (error) {
+                console.error('Error loading model:', error);
+            }
+        );
+        // Animation Loop
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+    </script>
+</body>
+</html>
